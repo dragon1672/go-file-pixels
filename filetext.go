@@ -13,6 +13,7 @@ import (
 
 var (
 	fileToRead = flag.String("file", "image.png", "file to load.")
+	fileOut    = flag.String("file_out", "", "file to save.")
 )
 
 type Pixel struct {
@@ -63,5 +64,18 @@ func main() {
 
 	pixels := getPixels(img)
 
+	if *fileOut != "" {
+		f, err := os.Create(*fileOut)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+		if _, err := f.WriteString(fmt.Sprint(pixels)); err != nil {
+			log.Fatal(err)
+		}
+
+	}
+
 	fmt.Println(pixels)
+
 }
